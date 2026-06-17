@@ -13,6 +13,8 @@ processResources {
         include "plugin.properties"
         expand(
                 version: "${project.parent.version}",
+                commit: "${rootProject.ext.git.head().abbreviatedId}",
+                date: "${rootProject.ext.git.head().getDate().format("yy.MM.dd")}",
                 name: project.parent.name,
         )
     }

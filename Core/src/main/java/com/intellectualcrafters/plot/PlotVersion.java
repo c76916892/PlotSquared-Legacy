@@ -12,6 +12,12 @@ public class PlotVersion {
     }
 
     public PlotVersion(String version, String commit, String date) {
+        if (version == null || commit == null || date == null) {
+            throw new IllegalArgumentException("Missing plugin version metadata");
+        }
+        if (version.contains("${") || commit.contains("${") || date.contains("${")) {
+            throw new IllegalArgumentException("Unexpanded plugin version metadata");
+        }
         String[] split = version.substring(version.indexOf('=') + 1).split("\\.");
         this.build = Integer.parseInt(split[1]);
         this.hash = Integer.parseInt(commit.substring(commit.indexOf('=') + 1), 16);
@@ -25,7 +31,6 @@ public class PlotVersion {
         try {
             return new PlotVersion(version, commit, date);
         } catch (Exception e) {
-            e.printStackTrace();
             return new PlotVersion(0, 0, 0, 0, 0);
         }
     }
